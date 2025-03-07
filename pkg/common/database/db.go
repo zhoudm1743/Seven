@@ -3,7 +3,6 @@ package database
 import (
 	"fmt"
 	"github.com/zhoudm1743/Seven/pkg/common/config"
-	"go.uber.org/zap"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -19,7 +18,7 @@ func NewDb(config *config.Config) (*gorm.DB, error) {
 		logger.Config{
 			SlowThreshold:             time.Second, // 慢 SQL 阈值
 			LogLevel:                  logger.Warn, // 日志级别
-			IgnoreRecordNotFoundError: false,       // 忽略ErrRecordNotFound（记录未找到）错误
+			IgnoreRecordNotFoundError: true,        // 忽略ErrRecordNotFound（记录未找到）错误
 			Colorful:                  true,        // 彩色打印
 		},
 	)
@@ -29,10 +28,9 @@ func NewDb(config *config.Config) (*gorm.DB, error) {
 		config.Database.Host,
 		config.Database.Port,
 		config.Database.Database)
-	zap.S().Info(dsn)
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
 		Logger:                 logg,
-		SkipDefaultTransaction: true,
+		SkipDefaultTransaction: true, // 禁用默认事务
 		NamingStrategy: schema.NamingStrategy{
 			TablePrefix:   config.Database.Prefix,
 			SingularTable: false,

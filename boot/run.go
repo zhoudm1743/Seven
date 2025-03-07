@@ -37,7 +37,11 @@ func run(
 		OnStart: func(ctx context.Context) error {
 			go func() {
 				zap.S().Info("启动Web服务器...", server.Server.Addr)
-				server.Server.ListenAndServe()
+				err := server.Server.ListenAndServe()
+				if err != nil {
+					zap.S().Error("Web服务器启动失败！", err)
+					return
+				}
 			}()
 			return nil
 		},

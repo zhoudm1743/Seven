@@ -47,9 +47,15 @@ func NewConfig() *Config {
 			AutoMigrate: true,
 		},
 		Admin: Admin{
-			BackstageTenantsKey: "backstage:tenants",
-			CommonUri:           []string{},
-			BackstageRolesKey:   "backstage:roles",
+			BackstageTenantsKey:      "backstage:tenants",
+			BackstageRolesKey:        "backstage:roles",
+			BackstageTokenKey:        "backstage:token:",
+			BackstageTokenSet:        "backstage:token:set:",
+			BackstageTokenExpireTime: 86400,
+			CommonUri:                []string{},
+			NotLoginUri: []string{
+				"/common/login",
+			},
 		},
 	}
 	conf := &Config{}

@@ -7,6 +7,7 @@ import (
 	"github.com/zhoudm1743/Seven/pkg/common/logger"
 	"github.com/zhoudm1743/Seven/pkg/common/middleware"
 	"net/http"
+	"time"
 )
 
 type HttpServer struct {
@@ -30,8 +31,17 @@ func NewHttpServer(config *config.Config) *HttpServer {
 		c.File("./webroot/index.html")
 	})
 	addr := fmt.Sprintf("%s:%d", config.Server.Host, config.Server.Port)
+
+	server := &http.Server{
+		Addr:         addr,
+		Handler:      engine,
+		ReadTimeout:  60 * time.Second,
+		WriteTimeout: 60 * time.Second,
+		IdleTimeout:  120 * time.Second,
+	}
+
 	return &HttpServer{
 		Gin:    engine,
-		Server: &http.Server{Addr: addr, Handler: engine},
+		Server: server,
 	}
 }

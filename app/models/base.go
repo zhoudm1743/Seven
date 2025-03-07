@@ -15,5 +15,5 @@ type SoftDelete struct {
 }
 
 type FormTenant struct {
-	TenantID uint `gorm:"not null;default:0;comment:'租户ID'"`
+	TenantId uint `gorm:"not null;default:0;comment:'租户ID'"`
 }

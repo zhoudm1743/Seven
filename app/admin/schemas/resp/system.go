@@ -1,8 +1,8 @@
 package resp
 
 import (
-	"seven-admin/util"
-	"seven-admin/util/times"
+	"github.com/zhoudm1743/Seven/pkg/util"
+	"github.com/zhoudm1743/Seven/pkg/util/times"
 )
 
 type SystemTenantResp struct {
@@ -60,4 +60,52 @@ type SystemRoleResp struct {
 	IsDisable  uint8       `json:"isDisable" structs:"isDisable"`   // 是否禁用: [0=否, 1=是]
 	CreateTime util.TsTime `json:"createTime" structs:"createTime"` // 创建时间
 	UpdateTime util.TsTime `json:"updateTime" structs:"updateTime"` // 更新时间
+}
+
+// SystemAdminResp 管理员返回信息
+type SystemAdminResp struct {
+	ID            uint        `json:"id" structs:"id"`             // 主键
+	Username      string      `json:"username" structs:"username"` // 账号
+	Nickname      string      `json:"nickname" structs:"nickname"` // 昵称
+	Avatar        string      `json:"avatar" structs:"avatar"`     // 头像
+	RoleId        uint        `json:"roleId" structs:"roleId"`     // 角色ID
+	DeptId        uint        `json:"deptId" structs:"deptId"`     // 部门ID
+	PostId        uint        `json:"postId" structs:"postId"`     // 岗位ID
+	Dept          string      `json:"dept" structs:"dept"`         // 部门
+	Tenant        string      `json:"tenant" structs:"tenant"`
+	IsMultipoint  uint8       `json:"isMultipoint" structs:"isMultipoint"` // 多端登录: [0=否, 1=是]
+	IsDisable     uint8       `json:"isDisable" structs:"isDisable"`       // 是否禁用: [0=否, 1=是]
+	TenantId      uint        `json:"tenantId" structs:"tenantId"`
+	LastLoginIp   string      `json:"lastLoginIp" structs:"lastLoginIp"`     // 最后登录IP
+	LastLoginTime util.TsTime `json:"lastLoginTime" structs:"lastLoginTime"` // 最后登录时间
+	CreateTime    util.TsTime `json:"createTime" structs:"createTime"`       // 创建时间
+	UpdateTime    util.TsTime `json:"updateTime" structs:"updateTime"`       // 更新时间
+}
+
+// SystemAdminSelfOneResp 当前管理员返回部分信息
+type SystemAdminSelfOneResp struct {
+	ID            uint        `json:"id" structs:"id"`             // 主键
+	Username      string      `json:"username" structs:"username"` // 账号
+	Nickname      string      `json:"nickname" structs:"nickname"` // 昵称
+	Avatar        string      `json:"avatar" structs:"avatar"`     // 头像
+	RoleId        uint        `json:"roleId" structs:"roleId"`     // 角色ID
+	DeptId        uint        `json:"deptId" structs:"deptId"`     // 部门ID
+	PostId        uint        `json:"postId" structs:"postId"`     // 岗位ID
+	Dept          string      `json:"dept" structs:"dept"`         // 部门
+	Tenant        string      `json:"tenant" structs:"tenant"`
+	TenantId      uint        `json:"tenantId" structs:"tenantId"`
+	IsMultipoint  uint8       `json:"isMultipoint" structs:"isMultipoint"`   // 多端登录: [0=否, 1=是]
+	IsDisable     uint8       `json:"isDisable" structs:"isDisable"`         // 是否禁用: [0=否, 1=是]
+	LastLoginIp   string      `json:"lastLoginIp" structs:"lastLoginIp"`     // 最后登录IP
+	LastLoginTime util.TsTime `json:"lastLoginTime" structs:"lastLoginTime"` // 最后登录时间
+	SoftSuper     bool        `json:"softSuper" structs:"softSuper"`
+	SuperTenant   bool        `json:"superTenant" structs:"superTenant"`
+	CreateTime    util.TsTime `json:"createTime" structs:"createTime"` // 创建时间
+	UpdateTime    util.TsTime `json:"updateTime" structs:"updateTime"` // 更新时间
+}
+
+// SystemAdminSelfResp 当前系统管理员返回信息
+type SystemAdminSelfResp struct {
+	User        SystemAdminSelfOneResp `json:"user" structs:"user"`               // 用户信息
+	Permissions []string               `json:"permissions" structs:"permissions"` // 权限集合: [[*]=>所有权限, ['article:add']=>部分权限]
 }

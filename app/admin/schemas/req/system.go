@@ -84,3 +84,48 @@ type SystemRoleEditReq struct {
 	Remark    string `form:"remark" json:"remark" binding:"max=200"`           // 角色备注
 	MenuIds   string `form:"menuIds" json:"menuIds"`                           // 关联菜单
 }
+
+// SystemAdminListReq 管理员列表参数
+type SystemAdminListReq struct {
+	Username string `form:"username"`        // 账号
+	Nickname string `form:"nickname"`        // 昵称
+	Role     *int   `form:"role,default=-1"` // 角色ID
+	TenantId *uint  `form:"tenantId"`        // 企业ID
+}
+
+// SystemAdminAddReq 管理员新增参数
+type SystemAdminAddReq struct {
+	DeptId       uint   `form:"deptId" json:"dept_id" binding:"gte=0"`                    // 部门ID
+	PostId       uint   `form:"postId" json:"post_id" binding:"gte=0"`                    // 岗位ID
+	Username     string `form:"username" json:"username" binding:"required,min=2,max=20"` // 账号
+	Nickname     string `form:"nickname" json:"nickname" binding:"required,min=2,max=30"` // 昵称
+	Password     string `form:"password" json:"password" binding:"required"`              // 密码
+	Avatar       string `form:"avatar" json:"avatar" binding:"required"`                  // 头像
+	RoleId       uint   `form:"role" json:"role" binding:"gte=0"`                         // 角色
+	Sort         int    `form:"sort" json:"sort" binding:"gte=0"`                         // 排序
+	IsDisable    uint8  `form:"isDisable" json:"isDisable" binding:"oneof=0 1"`           // 是否禁用: [0=否, 1=是]
+	IsMultipoint uint8  `form:"isMultipoint" json:"isMultipoint" binding:"oneof=0 1"`     // 多端登录: [0=否, 1=是]
+}
+
+// SystemAdminEditReq 管理员编辑参数
+type SystemAdminEditReq struct {
+	ID           uint   `form:"id" json:"id" binding:"required,gt=0"`                     // 主键
+	DeptId       uint   `form:"deptId" json:"dept_id" binding:"gte=0"`                    // 部门ID
+	PostId       uint   `form:"postId" json:"post_id" binding:"gte=0"`                    // 岗位ID
+	Username     string `form:"username" json:"username" binding:"required,min=2,max=20"` // 账号
+	Nickname     string `form:"nickname" json:"nickname" binding:"required,min=2,max=30"` // 昵称
+	Password     string `form:"password" json:"password"`                                 // 密码
+	Avatar       string `form:"avatar" json:"avatar"`                                     // 头像
+	RoleId       uint   `form:"role" json:"role" binding:"gte=0"`                         // 角色
+	Sort         int    `form:"sort" json:"sort" binding:"gte=0"`                         // 排序
+	IsDisable    uint8  `form:"isDisable" json:"isDisable" binding:"oneof=0 1"`           // 是否禁用: [0=否, 1=是]
+	IsMultipoint uint8  `form:"isMultipoint" json:"isMultipoint" binding:"oneof=0 1"`     // 多端登录: [0=否, 1=是]
+}
+
+// SystemAdminUpdateReq 管理员更新参数
+type SystemAdminUpdateReq struct {
+	Nickname     string `form:"nickname" binding:"required,min=2,max=30"`     // 昵称
+	Avatar       string `form:"avatar"`                                       // 头像
+	Password     string `form:"password" binding:"required"`                  // 密码
+	CurrPassword string `form:"currPassword" binding:"required,min=6,max=32"` // 密码
+}

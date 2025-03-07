@@ -1,0 +1,28 @@
+server:
+  port: 8080
+  host: 0.0.0.0
+
+log:
+  level: INFO
+  path: logs/app.log
+  maxSize: 100
+  maxBackups: 10
+  maxAge: 30
+
+redis:
+  host: 106.54.23.117
+  port: 6379
+  password: bp1m0c3xhbdc24pvmco
+  db: 5
+
+database:
+  host: 106.54.23.117
+  port: 3306
+  database: seven
+  username: seven
+  password: TdTnNHiiEtkXfih7
+  maxIdle: 10
+  maxOpen: 100
+  prefix: seven_
+  autoMigrate: true
+

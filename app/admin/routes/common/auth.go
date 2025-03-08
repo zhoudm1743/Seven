@@ -16,11 +16,11 @@ type authDep struct {
 }
 
 func authRoutes(dep authDep, r *contracts.AdminRouter) {
-	auth := r.Group("/common")
+	auth := r.Group("/common/auth")
 
-	auth.POST("/auth/login", dep.login)
-	auth.POST("/auth/logout", dep.logout)
-	auth.GET("/auth/tenant", dep.tenant)
+	auth.POST("/login", dep.login)
+	auth.POST("/logout", dep.logout)
+	auth.GET("/tenant", dep.tenant)
 }
 
 func (dep authDep) login(c *gin.Context) {

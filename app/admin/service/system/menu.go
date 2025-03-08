@@ -12,7 +12,7 @@ import (
 )
 
 type MenuService interface {
-	SelectMenuByRoleId(roleId uint, auth *req.AuthReq) (mapList []interface{}, e error)
+	SelectMenuByRoleId(auth *req.AuthReq) (mapList []interface{}, e error)
 	List(auth *req.AuthReq) (res []interface{}, e error)
 	Detail(id uint, auth *req.AuthReq) (res resp.SystemMenuResp, e error)
 	Add(addReq req.SystemMenuAddReq, auth *req.AuthReq) (e error)
@@ -27,9 +27,9 @@ type menuService struct {
 	config        *config.Config
 }
 
-func (m menuService) SelectMenuByRoleId(roleId uint, auth *req.AuthReq) (mapList []interface{}, e error) {
+func (m menuService) SelectMenuByRoleId(auth *req.AuthReq) (mapList []interface{}, e error) {
 	var role system.Role
-	if err := m.db.Where("id = ?", roleId).First(&role).Error; err != nil {
+	if err := m.db.Where("id = ?", auth.RoleId).First(&role).Error; err != nil {
 		return nil, fmt.Errorf("角色不存在")
 	}
 
@@ -42,7 +42,7 @@ func (m menuService) SelectMenuByRoleId(roleId uint, auth *req.AuthReq) (mapList
 		if role.IsAdmin == 1 {
 			menuIds = tenantMenuIds
 		} else {
-			roleMenuIds, err := m.rolePermSrv.SelectMenuIdsByRoleId(roleId, auth)
+			roleMenuIds, err := m.rolePermSrv.SelectMenuIdsByRoleId(role.ID, auth)
 			if err != nil {
 				return nil, err
 			}
@@ -55,7 +55,7 @@ func (m menuService) SelectMenuByRoleId(roleId uint, auth *req.AuthReq) (mapList
 			m.db.Where("type in (?)", []int{1, 2}).Order("sort asc, id desc").Pluck("id", &mIds)
 			menuIds = mIds
 		} else {
-			menuIds, err = m.rolePermSrv.SelectMenuIdsByRoleId(roleId, auth)
+			menuIds, err = m.rolePermSrv.SelectMenuIdsByRoleId(role.ID, auth)
 			if err != nil {
 				return nil, err
 			}

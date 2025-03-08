@@ -21,12 +21,12 @@ type AdminService interface {
 	FindByUsername(username string) (admin system.Admin, err error)
 	FindByTenantIdAndUsername(tenantId uint, username string) (admin system.Admin, err error)
 	FindByTenantIdAndId(tenantId uint, id uint) (admin system.Admin, err error)
-	Self(adminId uint, auth *req.AuthReq) (res resp.SystemAdminSelfResp, e error)
+	Self(auth *req.AuthReq) (res resp.SystemAdminSelfResp, e error)
 	List(page req.PageReq, listReq req.SystemAdminListReq, auth *req.AuthReq) (res response.PageResp, e error)
 	Detail(id uint, auth *req.AuthReq) (res resp.SystemAdminResp, e error)
 	Add(addReq req.SystemAdminAddReq, auth *req.AuthReq) (e error)
 	Edit(c *gin.Context, editReq req.SystemAdminEditReq, auth *req.AuthReq) (e error)
-	Update(c *gin.Context, updateReq req.SystemAdminUpdateReq, adminId uint, auth *req.AuthReq) (e error)
+	Update(c *gin.Context, updateReq req.SystemAdminUpdateReq, auth *req.AuthReq) (e error)
 	Del(id uint, auth *req.AuthReq) (e error)
 	Disable(id uint, auth *req.AuthReq) (e error)
 	CacheAdminUserByUid(id uint) (err error)
@@ -54,9 +54,9 @@ func (a adminService) FindByTenantIdAndId(tenantId uint, id uint) (admin system.
 	return
 }
 
-func (a adminService) Self(adminId uint, auth *req.AuthReq) (res resp.SystemAdminSelfResp, e error) {
+func (a adminService) Self(auth *req.AuthReq) (res resp.SystemAdminSelfResp, e error) {
 	var sysAdmin system.Admin
-	err := a.db.Where("id = ?", adminId).Limit(1).First(&sysAdmin).Error
+	err := a.db.Where("id = ?", auth.Id).Limit(1).First(&sysAdmin).Error
 	if e = response.CheckErr(err, "Self First err"); e != nil {
 		return
 	}
@@ -314,9 +314,9 @@ func (a adminService) Edit(c *gin.Context, editReq req.SystemAdminEditReq, auth 
 	return
 }
 
-func (a adminService) Update(c *gin.Context, updateReq req.SystemAdminUpdateReq, adminId uint, auth *req.AuthReq) (e error) {
+func (a adminService) Update(c *gin.Context, updateReq req.SystemAdminUpdateReq, auth *req.AuthReq) (e error) {
 	var admin system.Admin
-	err := a.db.Where("id = ?", adminId).Limit(1).First(&admin).Error
+	err := a.db.Where("id = ?", auth.Id).Limit(1).First(&admin).Error
 	if e = response.CheckErr(err, "Update First err"); e != nil {
 		return
 	}
@@ -349,7 +349,7 @@ func (a adminService) Update(c *gin.Context, updateReq req.SystemAdminUpdateReq,
 	if e = response.CheckErr(err, "Update Updates err"); e != nil {
 		return
 	}
-	a.CacheAdminUserByUid(adminId)
+	a.CacheAdminUserByUid(auth.Id)
 	// 如果更改自己的密码,则删除旧缓存
 	if updateReq.Password != "" {
 		token := c.Request.Header.Get("token")

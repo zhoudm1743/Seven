@@ -3,7 +3,6 @@ package middleware
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/gookit/color"
 	"github.com/spf13/cast"
 	"github.com/zhoudm1743/Seven/app/admin/schemas/req"
 	"github.com/zhoudm1743/Seven/app/admin/service/system"
@@ -28,9 +27,7 @@ var (
 func AuthCheck() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		auths := strings.ReplaceAll(strings.Replace(c.Request.URL.Path, "/admin/", "", 1), "/", ":")
-		color.Blueln("auths: ", auths)
 		// 免登录接口
-		color.Blueln("cfg.Admin.NotLoginUri: ", cfg.Admin.NotLoginUri)
 		if util.ToolsUtil.Contains(cfg.Admin.NotLoginUri, auths) {
 			c.Next()
 			return

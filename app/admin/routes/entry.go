@@ -3,6 +3,7 @@ package routes
 import (
 	"github.com/zhoudm1743/Seven/app/admin/contracts"
 	"github.com/zhoudm1743/Seven/app/admin/routes/common"
+	"github.com/zhoudm1743/Seven/app/admin/routes/system"
 	"github.com/zhoudm1743/Seven/app/admin/routes/test"
 	web "github.com/zhoudm1743/Seven/pkg/common/HttpServer"
 	"github.com/zhoudm1743/Seven/pkg/common/middleware"
@@ -15,6 +16,7 @@ var Module = fx.Module("adminRoutes",
 	test.Module,
 	// 注册路由
 	common.Module,
+	system.Module,
 )
 
 type RouterDeps struct {

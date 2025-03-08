@@ -26,7 +26,7 @@ type RoleService interface {
 
 type roleService struct {
 	db          *gorm.DB
-	rolePermSrv rolePermService
+	rolePermSrv RolePermService
 	cfg         *config.Config
 }
 
@@ -87,7 +87,7 @@ func (r roleService) Add(addReq req.SystemRoleAddReq, auth *req.AuthReq) (e erro
 	}
 	response.Copy(&role, addReq)
 	role.Name = strings.Trim(addReq.Name, " ")
-	role.TenantID = auth.TenantID
+	role.TenantId = auth.TenantID
 	// 事务
 	err := r.db.Transaction(func(tx *gorm.DB) error {
 		txErr := tx.Create(&role).Error
@@ -157,7 +157,7 @@ func (r roleService) Del(id uint, auth *req.AuthReq) (e error) {
 	if e = response.CheckErr(err, "Del First err"); e != nil {
 		return
 	}
-	tenantID := role.TenantID
+	tenantID := role.TenantId
 	// 事务
 	err = r.db.Transaction(func(tx *gorm.DB) error {
 		txErr := tx.Delete(&system.Role{}, "id = ?", id).Error
@@ -176,6 +176,6 @@ func (r roleService) Del(id uint, auth *req.AuthReq) (e error) {
 	return
 }
 
-func NewRoleService(db *gorm.DB, rolePermSrv rolePermService, cfg *config.Config) RoleService {
+func NewRoleService(db *gorm.DB, rolePermSrv RolePermService, cfg *config.Config) RoleService {
 	return &roleService{db: db, rolePermSrv: rolePermSrv, cfg: cfg}
 }

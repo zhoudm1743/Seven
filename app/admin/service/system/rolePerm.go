@@ -59,7 +59,7 @@ func (r rolePermService) CacheRoleMenusByRoleId(roleId uint) (e error) {
 	if len(r.cfg.Admin.CommonUri) > 0 {
 		menuArray = append(menuArray, r.cfg.Admin.CommonUri...)
 	}
-	key := fmt.Sprintf("%d:%d", role.TenantID, roleId)
+	key := fmt.Sprintf("%d:%d", role.TenantId, roleId)
 	util.RedisUtil.HSet(r.cfg.Admin.BackstageRolesKey, key, strings.Join(menuArray, ","), 0)
 	return
 }

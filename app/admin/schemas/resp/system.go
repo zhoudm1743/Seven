@@ -109,3 +109,28 @@ type SystemAdminSelfResp struct {
 	User        SystemAdminSelfOneResp `json:"user" structs:"user"`               // 用户信息
 	Permissions []string               `json:"permissions" structs:"permissions"` // 权限集合: [[*]=>所有权限, ['article:add']=>部分权限]
 }
+
+// SystemDeptResp 系统部门返回信息
+type SystemDeptResp struct {
+	ID         uint        `json:"id" structs:"id"`                 // 主键
+	Pid        uint        `json:"pid" structs:"pid"`               // 部门父级
+	Name       string      `json:"name" structs:"name"`             // 部门名称
+	Duty       string      `json:"duty" structs:"duty"`             // 负责人
+	Mobile     string      `json:"mobile" structs:"mobile"`         // 联系电话
+	Sort       uint16      `json:"sort" structs:"sort"`             // 排序编号
+	IsDisable  uint8       `json:"isDisable" structs:"isDisable"`   // 是否停用: [0=否, 1=是]
+	CreateTime util.TsTime `json:"createTime" structs:"createTime"` // 创建时间
+	UpdateTime util.TsTime `json:"updateTime" structs:"updateTime"` // 更新时间
+}
+
+// SystemPostResp 系统岗位返回信息
+type SystemPostResp struct {
+	ID         uint        `json:"id" structs:"id"`                 // 主键
+	Code       string      `json:"code" structs:"code"`             // 岗位编号
+	Name       string      `json:"name" structs:"name"`             // 岗位名称
+	Remarks    string      `json:"remarks" structs:"remarks"`       // 岗位备注
+	Sort       uint16      `json:"sort" structs:"sort"`             // 岗位排序
+	IsDisable  uint8       `json:"isDisable" structs:"isDisable"`   // 是否停用: [0=否, 1=是]
+	CreateTime util.TsTime `json:"createTime" structs:"createTime"` // 创建时间
+	UpdateTime util.TsTime `json:"updateTime" structs:"updateTime"` // 更新时间
+}

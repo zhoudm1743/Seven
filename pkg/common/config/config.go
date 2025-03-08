@@ -7,6 +7,7 @@ import (
 	"go.uber.org/zap"
 	"os"
 	"path"
+	"reflect"
 )
 
 func NewConfig() *Config {
@@ -51,10 +52,20 @@ func NewConfig() *Config {
 			BackstageRolesKey:        "backstage:roles",
 			BackstageTokenKey:        "backstage:token:",
 			BackstageTokenSet:        "backstage:token:set:",
+			BackstageManageKey:       "backstage:manage",
 			BackstageTokenExpireTime: 86400,
 			CommonUri:                []string{},
 			NotLoginUri: []string{
-				"/common/login",
+				"common:auth:login",
+				"common:auth:tenant",
+			},
+			NotAuthUri: []string{
+				"common:auth:logout",
+				"system:menu:menus",   // 系统菜单
+				"system:menu:route",   // 菜单路由
+				"system:admin:upInfo", // 管理员更新
+				"system:admin:self",   // 管理员信息
+				"system:role:all",     // 所有角色
 			},
 		},
 	}
@@ -79,5 +90,52 @@ func NewConfig() *Config {
 		return defaultcfg
 	}
 
+	applyDefaults(conf, defaultcfg)
+
 	return conf
+}
+
+func applyDefaults(conf, defaultCfg interface{}) {
+	confElem := reflect.ValueOf(conf).Elem()
+	defaultElem := reflect.ValueOf(defaultCfg).Elem()
+
+	for i := 0; i < confElem.NumField(); i++ {
+		confField := confElem.Field(i)
+		defaultField := defaultElem.Field(i)
+
+		// 递归处理嵌套结构体
+		if confField.Kind() == reflect.Struct {
+			applyDefaults(confField.Addr().Interface(), defaultField.Addr().Interface())
+			continue
+		}
+
+		// 处理切片类型（保持原有逻辑只处理nil情况）
+		if confField.Kind() == reflect.Slice && confField.IsNil() {
+			confField.Set(defaultField)
+			continue
+		}
+
+		// 处理零值替换
+		if isZeroValue(confField) {
+			confField.Set(defaultField)
+		}
+	}
+}
+
+// 判断是否零值（增强版）
+func isZeroValue(v reflect.Value) bool {
+	switch v.Kind() {
+	case reflect.String:
+		return v.Len() == 0
+	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
+		return v.Int() == 0
+	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64:
+		return v.Uint() == 0
+	case reflect.Float32, reflect.Float64:
+		return v.Float() == 0
+	case reflect.Ptr, reflect.Map, reflect.Slice, reflect.Chan:
+		return v.IsNil()
+	default:
+		return false
+	}
 }

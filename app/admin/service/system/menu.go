@@ -34,8 +34,8 @@ func (m menuService) SelectMenuByRoleId(roleId uint, auth *req.AuthReq) (mapList
 	}
 
 	var menuIds []uint
-	if role.TenantID > 1 {
-		tenantMenuIds, err := m.tenantPermSrv.SelectMenuIdsByTenantId(role.TenantID, auth)
+	if role.TenantId > 1 {
+		tenantMenuIds, err := m.tenantPermSrv.SelectMenuIdsByTenantId(role.TenantId, auth)
 		if err != nil {
 			return nil, err
 		}

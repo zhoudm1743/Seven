@@ -41,6 +41,8 @@ var (
 	Request404Error = RespType{code: 404, msg: "请求接口不存在"}
 	Request405Error = RespType{code: 405, msg: "请求方法不允许"}
 
+	TenantDisableOrExpired = RespType{code: 401, msg: "租户已被禁用或过期"}
+
 	RequestErrDuplicateNameError = RespType{code: 406, msg: "请求参数名称重复"}
 	SystemError                  = RespType{code: 500, msg: "系统错误"}
 )

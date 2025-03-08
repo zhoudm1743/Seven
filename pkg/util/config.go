@@ -63,7 +63,7 @@ func (cu configUtil) Set(db *gorm.DB, cnfType string, name string, val string, t
 	var config system.Config
 	err = db.Where("type = ? AND name = ? and tenant_id = ?", cnfType, name, tenantId).First(&config).Error
 	if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
-		config.TenantID = tenantId
+		config.TenantId = tenantId
 		config.Type = cnfType
 		config.Name = name
 		config.Value = val

@@ -53,11 +53,13 @@ type Database struct {
 }
 
 type Admin struct {
-	BackstageTenantsKey      string   `yaml:"backstage_tenants_key"`
-	BackstageRolesKey        string   `yaml:"backstage_roles_key"`
-	BackstageTokenKey        string   `yaml:"backstage_token_key"`
-	BackstageTokenSet        string   `yaml:"backstage_token_set"`
-	BackstageTokenExpireTime int64    `yaml:"backstage_token_expire_time"`
-	NotLoginUri              []string `yaml:"not_login_uri"`
-	CommonUri                []string `yaml:"common_uri"`
+	BackstageTenantsKey      string `yaml:"backstage_tenants_key"`
+	BackstageRolesKey        string `yaml:"backstage_roles_key"`
+	BackstageTokenKey        string `yaml:"backstage_token_key"`
+	BackstageTokenSet        string `yaml:"backstage_token_set"`
+	BackstageTokenExpireTime int    `yaml:"backstage_token_expire_time"`
+	BackstageManageKey       string `yaml:"backstage_manage_key"`
+	NotLoginUri              []string
+	CommonUri                []string
+	NotAuthUri               []string
 }

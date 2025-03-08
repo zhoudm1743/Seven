@@ -129,3 +129,56 @@ type SystemAdminUpdateReq struct {
 	Password     string `form:"password" binding:"required"`                  // 密码
 	CurrPassword string `form:"currPassword" binding:"required,min=6,max=32"` // 密码
 }
+
+// SystemPostListReq 岗位列表参数
+type SystemPostListReq struct {
+	Code      string `form:"code"`                                        // 岗位编码
+	Name      string `form:"name"`                                        // 岗位名称
+	IsDisable int8   `form:"isDisable,default=-1" binding:"oneof=-1 0 1"` // 是否停用: [0=否, 1=是]
+}
+
+// SystemPostAddReq 岗位新增参数
+type SystemPostAddReq struct {
+	Code      string `form:"code" json:"code" binding:"omitempty,min=1,max=30"` // 岗位编码
+	Name      string `form:"name" json:"name" binding:"required,min=1,max=30"`  // 岗位名称
+	Remarks   string `form:"remarks" json:"remarks" binding:"max=250"`          // 岗位备注
+	IsDisable uint8  `form:"isDisable" json:"isDisable" binding:"oneof=0 1"`    // 是否停用: [0=否, 1=是]
+	Sort      int    `form:"sort" json:"sort" binding:"gte=0"`                  // 排序编号
+}
+
+// SystemPostEditReq 岗位编辑参数
+type SystemPostEditReq struct {
+	ID        string `form:"id" json:"id" binding:"required,gt=0"`              // 主键
+	Code      string `form:"code" json:"code" binding:"omitempty,min=1,max=30"` // 岗位编码
+	Name      string `form:"name" json:"name" binding:"required,min=1,max=30"`  // 岗位名称
+	Remarks   string `form:"remarks" json:"remarks" binding:"max=250"`          // 岗位备注
+	IsDisable uint8  `form:"isDisable" json:"isDisable" binding:"oneof=0 1"`    // 是否停用: [0=否, 1=是]
+	Sort      int    `form:"sort" json:"sort" binding:"gte=0"`                  // 排序编号
+}
+
+// SystemDeptListReq 部门列表参数
+type SystemDeptListReq struct {
+	Name      string `form:"name"`                                        // 部门名称
+	IsDisable int8   `form:"isDisable,default=-1" binding:"oneof=-1 0 1"` // 是否停用: [0=否, 1=是]
+}
+
+// SystemDeptAddReq 部门新增参数
+type SystemDeptAddReq struct {
+	Pid       uint   `form:"pid" json:"pid" binding:"gte=0"`                    // 部门父级
+	Name      string `form:"name" json:"name" binding:"required,min=1,max=100"` // 部门名称
+	Duty      string `form:"duty" json:"duty" binding:"omitempty,min=1,max=30"` // 负责人
+	Mobile    string `form:"mobile" json:"mobile" binding:"omitempty,len=11"`   // 联系电话
+	IsDisable uint8  `form:"isDisable" json:"isDisable" binding:"oneof=0 1"`    // 是否停用: [0=否, 1=是]
+	Sort      int    `form:"sort" json:"sort" binding:"gte=0,lte=9999"`         // 排序编号
+}
+
+// SystemDeptEditReq 部门编辑参数
+type SystemDeptEditReq struct {
+	ID        uint   `form:"id" json:"id" binding:"required,gt=0"`              // 主键
+	Pid       uint   `form:"pid" json:"pid" binding:"gte=0"`                    // 部门父级
+	Name      string `form:"name" json:"name" binding:"required,min=1,max=100"` // 部门名称
+	Duty      string `form:"duty" json:"duty" binding:"omitempty,min=1,max=30"` // 负责人
+	Mobile    string `form:"mobile" json:"mobile" binding:"omitempty,len=11"`   // 联系电话
+	IsDisable uint8  `form:"isDisable" json:"isDisable" binding:"oneof=0 1"`    // 是否停用: [0=否, 1=是]
+	Sort      int    `form:"sort" json:"sort" binding:"gte=0,lte=9999"`         // 排序编号
+}

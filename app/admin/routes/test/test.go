@@ -4,7 +4,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/zhoudm1743/Seven/app/admin/contracts"
 	"github.com/zhoudm1743/Seven/app/admin/service/test"
-	web "github.com/zhoudm1743/Seven/pkg/common/HttpServer"
 	"go.uber.org/fx"
 )
 
@@ -12,7 +11,6 @@ var Module = fx.Module("testRoutes", fx.Invoke(registerRoutes))
 
 type routeDep struct {
 	fx.In
-	Http    *web.HttpServer
 	TestSrv test.TestService
 }
 

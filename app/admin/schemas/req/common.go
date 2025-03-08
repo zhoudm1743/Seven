@@ -6,3 +6,7 @@ type LoginReq struct {
 	TenantID uint   `json:"tenant_id" binding:"required"`
 	Captcha  string `json:"captcha" binding:"required"`
 }
+
+type LogoutReq struct {
+	Token string `json:"token" binding:"required"`
+}

@@ -12,7 +12,9 @@ import (
 	"time"
 )
 
-func NewDb(config *config.Config) (*gorm.DB, error) {
+var db *gorm.DB
+
+func NewDb(config *config.Config) (dbInstance *gorm.DB, err error) {
 	logg := logger.New(
 		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer（日志输出的目标，前缀和日志包含的内容——译者注）
 		logger.Config{
@@ -28,7 +30,7 @@ func NewDb(config *config.Config) (*gorm.DB, error) {
 		config.Database.Host,
 		config.Database.Port,
 		config.Database.Database)
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
+	db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
 		Logger:                 logg,
 		SkipDefaultTransaction: true, // 禁用默认事务
 		NamingStrategy: schema.NamingStrategy{
@@ -53,4 +55,9 @@ func NewDb(config *config.Config) (*gorm.DB, error) {
 		}
 	}
 	return db, nil
+}
+
+// GetDb 获取数据库连接
+func GetDB() *gorm.DB {
+	return db
 }

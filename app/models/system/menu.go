@@ -4,52 +4,25 @@ import (
 	model "github.com/zhoudm1743/Seven/app/models"
 )
 
-/*
-*
-
-	{
-	      label: 'Dashboard',
-	      key: 'dashboard',
-	      type: 1,
-	      subtitle: 'dashboard',
-	      openType: 1,
-	      auth: 'dashboard',
-	      path: '/dashboard',
-	      children: [
-	        {
-	          label: '主控台',
-	          key: 'console',
-	          type: 1,
-	          subtitle: 'console',
-	          openType: 1,
-	          auth: 'console',
-	          path: '/dashboard/console',
-	        },
-	        {
-	          label: '工作台',
-	          key: 'workplace',
-	          type: 1,
-	          subtitle: 'workplace',
-	          openType: 1,
-	          auth: 'workplace',
-	          path: '/dashboard/workplace',
-	        },
-	      ],
-	    },
-*/
 type Menu struct {
 	model.Model
-	ParentID uint   `gorm:"column:parent_id"`
-	Label    string `gorm:"column:label"`
-	Key      string `gorm:"column:key"`
-	Type     uint   `gorm:"column:type"`
-	Subtitle string `gorm:"column:subtitle"`
-	OpenType uint   `gorm:"column:open_type"`
-	Auth     string `gorm:"column:auth"`
-	Path     string `gorm:"column:path"`
-	Icon     string `gorm:"column:icon"`
-	Sort     uint   `gorm:"column:sort"`
-	Children []Menu `gorm:"-"`
+	Pid           uint   `gorm:"column:pid"`
+	Name          string `gorm:"column:name"`
+	Path          string `gorm:"column:path"`
+	Redirect      string `gorm:"column:redirect"`
+	ComponentPath string `gorm:"column:componentPath"`
+	IsDisabled    bool   `gorm:"column:isDisabled;default:false"`
+	Icon          string `gorm:"column:icon"`
+	MenuType      string `json:"menuType" gorm:"column:menuType"`                       // dir or page
+	Title         string `json:"title" gorm:"column:title"`                             // 页面标题
+	RequiresAuth  bool   `json:"requiresAuth" gorm:"column:requiresAuth;default:false"` // 是否需要登录权限
+	KeepAlive     bool   `json:"keepAlive" gorm:"column:keepAlive;default:false"`       // 是否开启页面缓存
+	Hide          bool   `json:"hide" gorm:"column:hide;default:false"`                 // 不显示在菜单中
+	Sort          uint   `json:"sort" gorm:"column:sort;default:0"`                     // 排序
+	Href          string `json:"href" gorm:"column:href"`                               // 嵌套外链
+	ActiveMenu    string `json:"activeMenu" gorm:"column:activeMenu"`                   // 当前路由高亮菜单
+	WithoutTab    bool   `json:"withoutTab" gorm:"column:withoutTab;default:false"`     // 不添加到Tab
+	PinTab        bool   `json:"pinTab" gorm:"column:pinTab;default:false"`             // 固定Tab
 }
 
 // TableName 表名

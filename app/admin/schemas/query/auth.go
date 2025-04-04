@@ -2,7 +2,6 @@ package query
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/gookit/color"
 	"github.com/zhoudm1743/Seven/app/admin/schemas/req"
 	"gorm.io/gorm"
 )
@@ -23,10 +22,9 @@ func AuthQuery(db *gorm.DB, auth *req.AuthReq) *gorm.DB {
 }
 
 func GetAuthReq(ctx *gin.Context) *req.AuthReq {
-	auth := ctx.MustGet("auth").(*req.AuthReq)
-	if auth == nil {
-		color.Redln("GetAuthReq error", auth)
-		return nil
+	auth, exists := ctx.Get("auth")
+	if exists {
+		return auth.(*req.AuthReq)
 	}
-	return auth
+	return nil
 }

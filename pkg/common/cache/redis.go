@@ -6,13 +6,12 @@ import (
 	"github.com/gookit/color"
 	"github.com/redis/go-redis/v9"
 	"github.com/zhoudm1743/Seven/pkg/common/config"
-	"go.uber.org/zap"
 	"time"
 )
 
 var ctx = context.Background()
 
-var Redis *redis.Client
+var redisClient *redis.Client
 
 func InitRedis(config *config.Config) (*redis.Client, error) {
 	uri := fmt.Sprintf("redis://:%s@%s:%d", config.Redis.Password, config.Redis.Host, config.Redis.Port)
@@ -30,7 +29,17 @@ func InitRedis(config *config.Config) (*redis.Client, error) {
 		color.Redln("初始化Redis失败", err)
 		return nil, err
 	}
-	Redis = client
-	zap.S().Infof("初始化Redis成功")
+	redisClient = client
 	return client, nil
+}
+
+func GetRedis() *redis.Client {
+	if redisClient == nil {
+		initRedis, err := InitRedis(config.NewConfig())
+		if err != nil {
+			return nil
+		}
+		return initRedis
+	}
+	return redisClient
 }

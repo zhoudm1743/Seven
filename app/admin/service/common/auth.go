@@ -3,6 +3,7 @@ package common
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/redis/go-redis/v9"
 	"github.com/zhoudm1743/Seven/app/admin/schemas/req"
 	"github.com/zhoudm1743/Seven/app/admin/schemas/resp"
 	sysSrv "github.com/zhoudm1743/Seven/app/admin/service/system"
@@ -26,6 +27,7 @@ type authService struct {
 	db       *gorm.DB
 	cfg      *config.Config
 	adminSrv sysSrv.AdminService
+	cache    *redis.Client
 }
 
 func (a authService) Tenant() (res []resp.Select, e error) {
@@ -103,8 +105,24 @@ func (a authService) Login(c *gin.Context, req *req.LoginReq) (res resp.LoginRes
 			return
 		}
 	}
+	var adminResp resp.SystemAdminSelfOneResp
+	response.Copy(&adminResp, sysAdmin)
+	if sysAdmin.Role != nil {
+		adminResp.Role = sysAdmin.Role.Name
+	}
+	if sysAdmin.Dept != nil {
+		adminResp.Dept = sysAdmin.Dept.Name
+	}
+	if sysAdmin.Post != nil {
+		adminResp.Post = sysAdmin.Post.Name
+	}
+	if sysAdmin.Tenant != nil {
+		adminResp.Tenant = sysAdmin.Tenant.Name
+	}
+	adminResp.SoftSuper = sysAdmin.Role.IsAdmin == 1
+	adminResp.SuperTenant = sysAdmin.TenantId == 1
 	// 返回登录信息
-	return resp.LoginResp{Token: token}, nil
+	return resp.LoginResp{Token: token, UserInfo: adminResp}, nil
 }
 
 func (a authService) Logout(req *req.LogoutReq) (e error) {
@@ -112,6 +130,6 @@ func (a authService) Logout(req *req.LogoutReq) (e error) {
 	return
 }
 
-func NewAuthService(db *gorm.DB, cfg *config.Config, adminSrv sysSrv.AdminService) AuthService {
-	return &authService{db: db, cfg: cfg, adminSrv: adminSrv}
+func NewAuthService(db *gorm.DB, cfg *config.Config, adminSrv sysSrv.AdminService, cache *redis.Client) AuthService {
+	return &authService{db: db, cfg: cfg, adminSrv: adminSrv, cache: cache}
 }

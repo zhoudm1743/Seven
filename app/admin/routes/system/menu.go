@@ -33,11 +33,7 @@ func (t menuDep) route(c *gin.Context) {
 }
 
 func (t menuDep) list(c *gin.Context) {
-	var detailReq req.IdReq
-	if response.IsFailWithResp(c, util.VerifyUtil.VerifyQuery(c, &detailReq)) {
-		return
-	}
-	res, err := t.MenuSrv.Detail(detailReq.ID, query.GetAuthReq(c))
+	res, err := t.MenuSrv.List(query.GetAuthReq(c))
 	response.CheckAndRespWithData(c, res, err)
 }
 
@@ -52,19 +48,19 @@ func (t menuDep) detail(c *gin.Context) {
 
 func (t menuDep) add(c *gin.Context) {
 	var addReq req.SystemMenuAddReq
-	if response.IsFailWithResp(c, util.VerifyUtil.VerifyBody(c, &addReq)) {
+	if response.IsFailWithResp(c, util.VerifyUtil.VerifyJSON(c, &addReq)) {
 		return
 	}
-	err := t.MenuSrv.Add(addReq, query.GetAuthReq(c))
+	err := t.MenuSrv.Add(&addReq, query.GetAuthReq(c))
 	response.CheckAndResp(c, err)
 }
 
 func (t menuDep) edit(c *gin.Context) {
 	var editReq req.SystemMenuEditReq
-	if response.IsFailWithResp(c, util.VerifyUtil.VerifyBody(c, &editReq)) {
+	if response.IsFailWithResp(c, util.VerifyUtil.VerifyJSON(c, &editReq)) {
 		return
 	}
-	err := t.MenuSrv.Edit(editReq, query.GetAuthReq(c))
+	err := t.MenuSrv.Edit(&editReq, query.GetAuthReq(c))
 	response.CheckAndResp(c, err)
 }
 

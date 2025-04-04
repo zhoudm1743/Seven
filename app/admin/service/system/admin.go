@@ -40,23 +40,44 @@ type adminService struct {
 }
 
 func (a adminService) FindByUsername(username string) (admin system.Admin, err error) {
-	err = a.db.Where("username = ?", username).First(&admin).Error
+	err = a.db.Where("username = ?", username).Preload("Dept").Preload("Role").Preload("Post").First(&admin).Error
+	if admin.TenantId > 0 {
+		var tenant system.Tenant
+		err = a.db.Where("id = ?", admin.TenantId).First(&tenant).Error
+		if err == nil {
+			admin.Tenant = &tenant
+		}
+	}
 	return
 }
 
 func (a adminService) FindByTenantIdAndUsername(tenantId uint, username string) (admin system.Admin, err error) {
-	err = a.db.Where("tenant_id = ? AND username = ?", tenantId, username).First(&admin).Error
+	err = a.db.Where("tenant_id = ? AND username = ?", tenantId, username).Preload("Dept").Preload("Role").Preload("Post").First(&admin).Error
+	if admin.TenantId > 0 {
+		var tenant system.Tenant
+		err = a.db.Where("id = ?", admin.TenantId).First(&tenant).Error
+		if err == nil {
+			admin.Tenant = &tenant
+		}
+	}
 	return
 }
 
 func (a adminService) FindByTenantIdAndId(tenantId uint, id uint) (admin system.Admin, err error) {
-	err = a.db.Where("tenant_id = ? AND id = ?", tenantId, id).First(&admin).Error
+	err = a.db.Where("tenant_id = ? AND id = ?", tenantId, id).Preload("Dept").Preload("Role").Preload("Post").First(&admin).Error
+	if admin.TenantId > 0 {
+		var tenant system.Tenant
+		err = a.db.Where("id = ?", admin.TenantId).First(&tenant).Error
+		if err == nil {
+			admin.Tenant = &tenant
+		}
+	}
 	return
 }
 
 func (a adminService) Self(auth *req.AuthReq) (res resp.SystemAdminSelfResp, e error) {
 	var sysAdmin system.Admin
-	err := a.db.Where("id = ?", auth.Id).Limit(1).First(&sysAdmin).Error
+	err := a.db.Where("id = ?", auth.Id).Preload("Dept").Preload("Role").Preload("Post").First(&sysAdmin).Error
 	if e = response.CheckErr(err, "Self First err"); e != nil {
 		return
 	}
@@ -72,14 +93,14 @@ func (a adminService) Self(auth *req.AuthReq) (res resp.SystemAdminSelfResp, e e
 		if len(menuIds) > 0 {
 			var menus []system.Menu
 			err := a.db.Where(
-				"id in ? AND type in ?", menuIds, 0, []int{1, 2}).Order(
-				"menu_sort asc, id desc").Find(&menus).Error
+				"id in ? AND menuType in ?", menuIds, 0, []string{"dir", "page"}).Order(
+				"sort asc, id desc").Find(&menus).Error
 			if e = response.CheckErr(err, "Self SystemAuthMenu Find err"); e != nil {
 				return
 			}
 			if len(menus) > 0 {
 				for _, v := range menus {
-					auths = append(auths, strings.Trim(v.Auth, " "))
+					auths = append(auths, strings.Trim(v.Name, " "))
 				}
 			}
 		}
@@ -88,14 +109,14 @@ func (a adminService) Self(auth *req.AuthReq) (res resp.SystemAdminSelfResp, e e
 			var menus []system.Menu
 			a.db.Model(&system.TenantPerm{}).Where("tenant_id = ?", auth.TenantID).Pluck("menu_id", &tentMenus)
 			err := a.db.Where(
-				"id in ? AND type in ?", tentMenus, 0, []int{1, 2}).Order(
-				"menu_sort asc, id desc").Find(&menus).Error
+				"id in ? AND menuType in ?", tentMenus, 0, []string{"dir", "page"}).Order(
+				"sort asc, id desc").Find(&menus).Error
 			if e = response.CheckErr(err, "Self SystemAuthMenu Find err"); e != nil {
 				return
 			}
 			if len(menus) > 0 {
 				for _, v := range menus {
-					auths = append(auths, strings.Trim(v.Auth, " "))
+					auths = append(auths, strings.Trim(v.Name, " "))
 				}
 			}
 		}

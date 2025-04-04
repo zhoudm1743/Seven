@@ -34,35 +34,47 @@ type SystemTenantQueryReq struct {
 }
 
 type SystemMenuAddReq struct {
-	ParentId uint               `json:"parentId" binding:"required" form:"parentId"`
-	Label    string             `json:"label" binding:"required" form:"label"`
-	Key      string             `json:"key" binding:"required" form:"key"`
-	Type     uint               `json:"type" binding:"required" form:"type"`
-	Subtitle string             `json:"subtitle" form:"subtitle"`
-	OpenType uint               `json:"openType" form:"openType"`
-	Auth     string             `json:"auth" form:"auth"`
-	Path     string             `json:"path" form:"path"`
-	Icon     string             `json:"icon" form:"icon"`
-	Sort     uint               `json:"sort" form:"sort"`
-	Button   []SystemMenuButton `json:"button" form:"button"`
+	Pid           uint               `json:"pid" form:"pid"`
+	Name          string             `json:"name" binding:"required" form:"name"`
+	Path          string             `json:"path" binding:"required" form:"path"`
+	Redirect      string             `json:"redirect" form:"redirect"`
+	ComponentPath string             `json:"componentPath" form:"componentPath"`
+	Title         string             `json:"title" form:"title"`               // 页面标题
+	Icon          string             `json:"icon" form:"icon"`                 // 图标
+	RequiresAuth  bool               `json:"requiresAuth" form:"requiresAuth"` // 是否需要登录权限
+	KeepAlive     bool               `json:"keepAlive" form:"keepAlive"`       // 是否开启页面缓存
+	Hide          bool               `json:"hide" form:"hide"`                 // 不显示在菜单中
+	Sort          uint               `json:"sort" form:"sort"`                 // 菜单排序
+	Href          string             `json:"href" form:"href"`                 // 嵌套外链
+	ActiveMenu    string             `json:"activeMenu" form:"activeMenu"`     // 当前路由高亮菜单
+	WithoutTab    bool               `json:"withoutTab" form:"withoutTab"`     // 不添加到Tab
+	PinTab        bool               `json:"pinTab" form:"pinTab"`             // 固定Tab
+	MenuType      string             `json:"menuType" form:"menuType"`         // dir or page
+	Button        []SystemMenuButton `json:"button" form:"button"`
 }
 type SystemMenuEditReq struct {
-	ID       uint               `json:"id" binding:"required" form:"id"`
-	ParentId uint               `json:"parentId" binding:"required" form:"parentId"`
-	Label    string             `json:"label" binding:"required" form:"label"`
-	Key      string             `json:"key" binding:"required" form:"key"`
-	Type     uint               `json:"type" binding:"required" form:"type"`
-	Subtitle string             `json:"subtitle" form:"subtitle"`
-	OpenType uint               `json:"openType" form:"openType"`
-	Auth     string             `json:"auth" form:"auth"`
-	Path     string             `json:"path" form:"path"`
-	Icon     string             `json:"icon" form:"icon"`
-	Sort     uint               `json:"sort" form:"sort"`
-	Button   []SystemMenuButton `json:"button" form:"button"`
+	ID            uint               `json:"id" binding:"required" form:"id"`
+	Pid           uint               `json:"pid" form:"pid"`
+	Name          string             `json:"name" binding:"required" form:"name"`
+	Path          string             `json:"path" binding:"required" form:"path"`
+	Redirect      string             `json:"redirect" form:"redirect"`
+	ComponentPath string             `json:"componentPath" form:"componentPath"`
+	Title         string             `json:"title" form:"title"`               // 页面标题
+	Icon          string             `json:"icon" form:"icon"`                 // 图标
+	RequiresAuth  bool               `json:"requiresAuth" form:"requiresAuth"` // 是否需要登录权限
+	KeepAlive     bool               `json:"keepAlive" form:"keepAlive"`       // 是否开启页面缓存
+	Hide          bool               `json:"hide" form:"hide"`                 // 不显示在菜单中
+	Sort          uint               `json:"sort" form:"sort"`                 // 菜单排序
+	Href          string             `json:"href" form:"href"`                 // 嵌套外链
+	ActiveMenu    string             `json:"activeMenu" form:"activeMenu"`     // 当前路由高亮菜单
+	WithoutTab    bool               `json:"withoutTab" form:"withoutTab"`     // 不添加到Tab
+	PinTab        bool               `json:"pinTab" form:"pinTab"`             // 固定Tab
+	MenuType      string             `json:"menuType" form:"menuType"`         // dir or page
+	Button        []SystemMenuButton `json:"button" form:"button"`
 }
 type SystemMenuButton struct {
-	Label string `json:"label" binding:"required" form:"label"`
-	Auth  string `json:"auth" binding:"required" form:"auth"`
+	Title string `json:"title" binding:"required" form:"title"`
+	Name  string `json:"name" binding:"required" form:"name"`
 	Sort  uint   `json:"sort" binding:"required" form:"sort"`
 }
 

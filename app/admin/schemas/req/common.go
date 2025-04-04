@@ -1,10 +1,9 @@
 package req
 
 type LoginReq struct {
-	Username string `json:"username" binding:"required"`
-	Password string `json:"password" binding:"required"`
-	TenantID uint   `json:"tenant_id" binding:"required"`
-	Captcha  string `json:"captcha" binding:"required"`
+	Username string `json:"username" form:"username" binding:"required"`
+	Password string `json:"password" form:"password" binding:"required"`
+	TenantID uint   `json:"tenantId" form:"tenantId" binding:"required"`
 }
 
 type LogoutReq struct {

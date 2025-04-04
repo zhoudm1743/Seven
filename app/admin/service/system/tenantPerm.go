@@ -43,7 +43,7 @@ func (t tenantPermService) CacheTenantMenusByTenantId(tenantId uint) (e error) {
 		return
 	}
 	var menus []system.Menu
-	e = t.db.Where("id in (?) and type in (?) and is_disable = ?", menuIds, []int{1, 2}, 0).Order("sort asc, id desc").Find(&menus).Error
+	e = t.db.Where("id in (?) and menuType in (?)", menuIds, []string{"dir", "page"}).Order("id desc").Find(&menus).Error
 	if e != nil {
 		return
 	}
@@ -52,7 +52,7 @@ func (t tenantPermService) CacheTenantMenusByTenantId(tenantId uint) (e error) {
 	}
 	var menuArray []string
 	for _, menu := range menus {
-		menuArray = append(menuArray, strings.Trim(menu.Auth, ""))
+		menuArray = append(menuArray, strings.Trim(menu.Name, ""))
 	}
 	// 其他权限
 	if len(t.cfg.Admin.CommonUri) > 0 {

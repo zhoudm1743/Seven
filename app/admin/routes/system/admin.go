@@ -35,11 +35,15 @@ func (t adminDep) self(c *gin.Context) {
 }
 
 func (t adminDep) list(c *gin.Context) {
-	var detailReq req.IdReq
-	if response.IsFailWithResp(c, util.VerifyUtil.VerifyQuery(c, &detailReq)) {
+	var pageReq req.PageReq
+	if response.IsFailWithResp(c, util.VerifyUtil.VerifyQuery(c, &pageReq)) {
 		return
 	}
-	res, err := t.AdminSrv.Detail(detailReq.ID, query.GetAuthReq(c))
+	var listReq req.SystemAdminListReq
+	if response.IsFailWithResp(c, util.VerifyUtil.VerifyQuery(c, &listReq)) {
+		return
+	}
+	res, err := t.AdminSrv.List(pageReq, listReq, query.GetAuthReq(c))
 	response.CheckAndRespWithData(c, res, err)
 }
 

@@ -6,6 +6,7 @@ import (
 	"github.com/zhoudm1743/Seven/pkg/common/config"
 	"github.com/zhoudm1743/Seven/pkg/common/logger"
 	"github.com/zhoudm1743/Seven/pkg/common/middleware"
+	"github.com/zhoudm1743/Seven/pkg/common/response"
 	"net/http"
 	"time"
 )
@@ -30,6 +31,9 @@ func NewHttpServer(config *config.Config) *HttpServer {
 	engine.NoRoute(func(c *gin.Context) {
 		c.File("./webroot/index.html")
 	})
+
+	engine.NoMethod(response.NoMethod)
+
 	addr := fmt.Sprintf("%s:%d", config.Server.Host, config.Server.Port)
 
 	server := &http.Server{

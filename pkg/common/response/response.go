@@ -18,7 +18,7 @@ type RespType struct {
 // Response 响应格式结构
 type Response struct {
 	Code int         `json:"code"`
-	Msg  string      `json:"msg"`
+	Msg  string      `json:"message"`
 	Data interface{} `json:"data"`
 }
 

@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-var RedisUtil = redisUtil{redis: cache.Redis, config: config.NewConfig()}
+var RedisUtil = redisUtil{redis: cache.GetRedis(), config: config.NewConfig()}
 
 // redisUtil Redis操作工具类
 type redisUtil struct {

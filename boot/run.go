@@ -4,7 +4,6 @@ import (
 	"context"
 	"github.com/redis/go-redis/v9"
 	"github.com/zhoudm1743/Seven/app/admin"
-	"github.com/zhoudm1743/Seven/app/cms"
 	web "github.com/zhoudm1743/Seven/pkg/common/HttpServer"
 	"github.com/zhoudm1743/Seven/pkg/common/cache"
 	"github.com/zhoudm1743/Seven/pkg/common/config"
@@ -23,7 +22,7 @@ var Module = fx.Options(
 	web.Module,
 
 	admin.Module,
-	cms.Module,
+	//cms.Module,
 
 	fx.Invoke(run),
 )

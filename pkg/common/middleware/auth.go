@@ -26,7 +26,7 @@ var (
 
 func AuthCheck() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		auths := strings.ReplaceAll(strings.Replace(c.Request.URL.Path, "/admin/", "", 1), "/", ":")
+		auths := strings.ReplaceAll(strings.Replace(c.Request.URL.Path, "/admin/", "", 1), "/", "_")
 		// 免登录接口
 		if util.ToolsUtil.Contains(cfg.Admin.NotLoginUri, auths) {
 			c.Next()
@@ -117,7 +117,7 @@ func AuthCheck() gin.HandlerFunc {
 		//	return
 		//}
 		// session 存储用户信息
-		c.Set("auth", auth)
+		c.Set("auth", &auth)
 
 		// 免权限验证接口
 		if util.ToolsUtil.Contains(cfg.Admin.NotAuthUri, auths) || (auth.IsAdmin && auth.IsSuperTenant) {

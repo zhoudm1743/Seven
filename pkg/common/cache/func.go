@@ -79,7 +79,7 @@ func (q *Queue) Clear() {
 
 // Exists 判断key是否存在
 func Exists(key string) bool {
-	_, err := Redis.Get(ctx, key).Result()
+	_, err := GetRedis().Get(ctx, key).Result()
 	if err == redis.Nil {
 		return false
 	}
@@ -88,7 +88,7 @@ func Exists(key string) bool {
 
 // Set 设置key
 func Set(key, value string, expiration time.Duration) {
-	_, err := Redis.Set(ctx, key, value, expiration).Result()
+	_, err := GetRedis().Set(ctx, key, value, expiration).Result()
 	if err != nil {
 		color.Redln("Set err: ", err)
 	}
@@ -96,7 +96,7 @@ func Set(key, value string, expiration time.Duration) {
 
 // Get 获取key
 func Get(key string) string {
-	value, err := Redis.Get(ctx, key).Result()
+	value, err := GetRedis().Get(ctx, key).Result()
 	if err != nil {
 		color.Redln("Get err: ", err)
 	}
@@ -105,7 +105,7 @@ func Get(key string) string {
 
 // Del 删除key
 func Del(key string) {
-	_, err := Redis.Del(ctx, key).Result()
+	_, err := GetRedis().Del(ctx, key).Result()
 	if err != nil {
 		color.Redln("Del err: ", err)
 	}
@@ -113,7 +113,7 @@ func Del(key string) {
 
 // Expire 设置key过期时间
 func Expire(key string, expiration time.Duration) {
-	_, err := Redis.Expire(ctx, key, expiration).Result()
+	_, err := GetRedis().Expire(ctx, key, expiration).Result()
 	if err != nil {
 		color.Redln("Expire err: ", err)
 	}
@@ -121,7 +121,7 @@ func Expire(key string, expiration time.Duration) {
 
 // HSet 设置hash key
 func HSet(key, field, value string) {
-	_, err := Redis.HSet(ctx, key, field, value).Result()
+	_, err := GetRedis().HSet(ctx, key, field, value).Result()
 	if err != nil {
 		color.Redln("HSet err: ", err)
 	}

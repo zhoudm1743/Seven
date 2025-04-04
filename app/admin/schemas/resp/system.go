@@ -21,24 +21,30 @@ type SystemTenantResp struct {
 }
 
 type SystemMenuResp struct {
-	ID       uint               `json:"id" binding:"required" form:"id"`
-	ParentId uint               `json:"parent_id" binding:"required" form:"parent_id"`
-	Label    string             `json:"label" binding:"required" form:"label"`
-	Key      string             `json:"key" binding:"required" form:"key"`
-	Type     uint               `json:"type" binding:"required" form:"type"`
-	Subtitle string             `json:"subtitle" form:"subtitle"`
-	OpenType uint               `json:"open_type" form:"open_type"`
-	Auth     string             `json:"auth" form:"auth"`
-	Path     string             `json:"path" form:"path"`
-	Icon     string             `json:"icon" form:"icon"`
-	Sort     uint               `json:"sort" form:"sort"`
-	Button   []SystemMenuButton `json:"button" form:"button"`
+	ID            uint               `json:"id" structs:"id"`
+	Pid           uint               `json:"pid" structs:"pid"`
+	Name          string             `json:"name" structs:"name"`
+	Path          string             `json:"path" structs:"path"`
+	Redirect      string             `json:"redirect" structs:"redirect"`
+	ComponentPath string             `json:"componentPath" structs:"componentPath"`
+	Title         string             `json:"title" structs:"title"`               // 页面标题
+	Icon          string             `json:"icon" structs:"icon"`                 // 图标
+	RequiresAuth  bool               `json:"requiresAuth" structs:"requiresAuth"` // 是否需要登录权限
+	KeepAlive     bool               `json:"keepAlive" structs:"keepAlive"`       // 是否开启页面缓存
+	Hide          bool               `json:"hide" structs:"hide"`                 // 不显示在菜单中
+	Sort          uint               `json:"sort" structs:"sort"`                 // 菜单排序
+	Href          string             `json:"href" structs:"href"`                 // 嵌套外链
+	ActiveMenu    string             `json:"activeMenu" structs:"activeMenu"`     // 当前路由高亮菜单
+	WithoutTab    bool               `json:"withoutTab" structs:"withoutTab"`     // 不添加到Tab
+	PinTab        bool               `json:"pinTab" structs:"pinTab"`             // 固定Tab
+	MenuType      string             `json:"menuType" structs:"menuType"`         // dir or page
+	Button        []SystemMenuButton `json:"button" structs:"button"`
 }
 
 type SystemMenuButton struct {
-	Label string `json:"label" binding:"required" form:"label"`
-	Auth  string `json:"auth" binding:"required" form:"auth"`
-	Sort  uint   `json:"sort" binding:"required" form:"sort"`
+	Title string `json:"title" structs:"title"`
+	Name  string `json:"name" structs:"name"`
+	Sort  uint   `json:"sort" structs:"sort"`
 }
 
 // SystemRoleSimpleResp 系统角色返回简单信息
@@ -88,12 +94,10 @@ type SystemAdminSelfOneResp struct {
 	Username      string      `json:"username" structs:"username"` // 账号
 	Nickname      string      `json:"nickname" structs:"nickname"` // 昵称
 	Avatar        string      `json:"avatar" structs:"avatar"`     // 头像
-	RoleId        uint        `json:"roleId" structs:"roleId"`     // 角色ID
-	DeptId        uint        `json:"deptId" structs:"deptId"`     // 部门ID
-	PostId        uint        `json:"postId" structs:"postId"`     // 岗位ID
+	Role          string      `json:"roleId" structs:"roleId"`     // 角色ID
+	Post          string      `json:"postId" structs:"postId"`     // 岗位ID
 	Dept          string      `json:"dept" structs:"dept"`         // 部门
 	Tenant        string      `json:"tenant" structs:"tenant"`
-	TenantId      uint        `json:"tenantId" structs:"tenantId"`
 	IsMultipoint  uint8       `json:"isMultipoint" structs:"isMultipoint"`   // 多端登录: [0=否, 1=是]
 	IsDisable     uint8       `json:"isDisable" structs:"isDisable"`         // 是否禁用: [0=否, 1=是]
 	LastLoginIp   string      `json:"lastLoginIp" structs:"lastLoginIp"`     // 最后登录IP

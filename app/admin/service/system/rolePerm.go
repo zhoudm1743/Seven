@@ -47,13 +47,13 @@ func (r rolePermService) CacheRoleMenusByRoleId(roleId uint) (e error) {
 	var menuIds []uint
 	r.db.Where("role_id = ?", roleId).Pluck("menu_id", &menuIds)
 	var menus []system.Menu
-	r.db.Where("id in (?) and type in (?) and is_disable = ?", menuIds, []int{1, 2}, 0).Order("sort asc, id desc").Find(&menus)
+	r.db.Where("id in (?) and menuType in (?)", menuIds, []string{"dir", "page"}).Order("id desc").Find(&menus)
 	if len(menus) == 0 {
 		return fmt.Errorf("roleId %d not found", roleId)
 	}
 	var menuArray []string
 	for _, menu := range menus {
-		menuArray = append(menuArray, strings.Trim(menu.Auth, ""))
+		menuArray = append(menuArray, strings.Trim(menu.Name, ""))
 	}
 	// 其他权限
 	if len(r.cfg.Admin.CommonUri) > 0 {

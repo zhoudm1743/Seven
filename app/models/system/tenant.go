@@ -6,14 +6,14 @@ import (
 
 type Tenant struct {
 	model.Model
-	Name      string `gorm:"column:name;not null;comment:租户名称" json:"name"`
-	Code      string `gorm:"column:code;not null;comment:租户编码" json:"code"`
-	Domain    string `gorm:"column:domain;not null;comment:租户域名" json:"domain"`
-	Remark    string `gorm:"column:remark;not null;comment:租户备注" json:"remark"`
-	Contact   string `gorm:"column:contact;not null;comment:租户联系人" json:"contact"`
-	Phone     string `gorm:"column:phone;not null;comment:租户联系电话" json:"phone"`
-	Email     string `gorm:"column:email;not null;comment:租户联系邮箱" json:"email"`
-	ExpireAt  int64  `gorm:"column:expire_at;not null;comment:租户过期时间" json:"expire_at"`
+	Name      string `gorm:"column:name;not null;default:'';comment:租户名称" json:"name"`
+	Code      string `gorm:"column:code;not null;default:'';comment:租户编码" json:"code"`
+	Domain    string `gorm:"column:domain;not null;default:'';comment:租户域名" json:"domain"`
+	Remark    string `gorm:"column:remark;not null;default:'';comment:租户备注" json:"remark"`
+	Contact   string `gorm:"column:contact;not null;default:'';comment:租户联系人" json:"contact"`
+	Phone     string `gorm:"column:phone;not null;default:'';comment:租户联系电话" json:"phone"`
+	Email     string `gorm:"column:email;not null;default:'';comment:租户联系邮箱" json:"email"`
+	ExpireAt  int64  `gorm:"column:expire_at;not null;default:0;comment:租户过期时间" json:"expire_at"`
 	IsDisable uint8  `gorm:"column:is_disable;not null;default:0;comment:是否禁用" json:"is_disable"`
 }
 

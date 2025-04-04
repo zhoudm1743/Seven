@@ -23,3 +23,9 @@ go.work.sum
 
 # env file
 .env
+.idea/.gitignore
+.idea/MarsCodeWorkspaceAppSettings.xml
+.idea/modules.xml
+.idea/Seven.iml
+.idea/vcs.xml
+logs/app.log
